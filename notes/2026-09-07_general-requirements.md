@@ -13,6 +13,7 @@ Data to be saved per phrase:
 - creation date, timestamp, automatically created based on current date-time, required
 - tags, comma separated values, optional but they will be used for searching, 100chars
 - author, optional, 50 chars
+- FOR THE FUTURE: font style and background.
 
 Users management should exists, at least on a very basic level.
 
@@ -23,6 +24,7 @@ User data can be the usual:
 - email
 - password
 - short profile, 200 chars
+- fraseario's theme
 
 Suggested domain name:  
 - frasear.io
@@ -41,8 +43,16 @@ The website pages:
 2. Someone fraseario's page:
     - Identified by domain.com/username
     - Exactly the same as Home, but all limited to the current username
+    - The user can choose a Theme for their fraseario
 3. Search results page
     - I have to think about it.
+
+
+## Themes
+A Theme defines the whole fraseario custom style for a single User.
+For now customizable elements will be:
+1. Font style 
+2. Background color / Image
 
 
 ## Data design
@@ -58,11 +68,21 @@ A Phrase can be referenced by at least one User. See [Note 1](#note-1)
 
 Author owns zero to many Phrases. [Note 2](#note-2)
 
+There are Themes.
+One User chooses one and only one Theme [Note 3](#note-3)
+
+
 ## Tech stack
 
-TBD
+Laravel
+PHP
+PostgreSQL
+Blade
+Tailwind CSS
+Alpine.js
+Laravel Breeze
+Pest
 
-## 
 
 ## Questions
 
@@ -83,3 +103,5 @@ The search for duplications may happens:
 It may be interesting to allow these sort of interactions.
 
 <a id="note-2">Note 2</a>: Authors should be added on the fly when the phrase is saved. When a phrase is being written, on the Author fields, an ajax bases suggestions dropdown is filled up so the User can choose an Author and avoids duplication. New Authors are added in this moment.
+
+<a id="note-2">Note 3</a>: It may be possible for an User to choose a Theme for a specific Phrase, thus overrriding the User's fraseario Theme.
