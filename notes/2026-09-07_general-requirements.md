@@ -54,10 +54,9 @@ A Phrase has:
  - one and only one author
  - zero to many tags
 
-A Phrase can be referenced by at least one User.  
-*I'm thinking, it may happen that one user already wrote the phrase another user wants to save. So, to avoid duplication, the same Phrase can be referenced by multiple Users. This opens the door to see "matches" with other people...*
+A Phrase can be referenced by at least one User. See [Note 1](#note-1)
 
-Author owns zero to many Phrases.
+Author owns zero to many Phrases. [Note 2](#note-2)
 
 ## Tech stack
 
@@ -71,4 +70,16 @@ TBD
 | :---: | -------- | ------ |
 |1      | How to display search results? | - |
 |2      | How do users are registered? | Initially manually|
-|3      | | |
+|3      | - | - |
+
+
+## Notes On The Go
+
+<a id="note-1">Note 1</a>: I'm thinking, it may happen that one user already wrote the phrase another user wants to save. So, to avoid duplication, the same Phrase can be referenced by multiple Users.  
+This opens the door to see "matches" with other people...  
+The search for duplications may happens:  
+1. when the phrase is saved, identify a 1:1 match, do not create a new phrase, just link it to the user; it may display to the user that they made a match with other(s)
+2. periodic automatic running script checking for duplications on not 1:1 phrases but more like a similarity text; it may notify the users about the posible merginf og the phrase, requiring authorization, showing the match with other users; notifications may be by email, maybe even allowing users to discuss which is the correct version, once agreed the phrases are merged; if there's no agreement then both phrases stay.
+It may be interesting to allow these sort of interactions.
+
+<a id="note-2">Note 2</a>: Authors should be added on the fly when the phrase is saved. When a phrase is being written, on the Author fields, an ajax bases suggestions dropdown is filled up so the User can choose an Author and avoids duplication. New Authors are added in this moment.
