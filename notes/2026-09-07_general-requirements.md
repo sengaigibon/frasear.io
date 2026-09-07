@@ -5,8 +5,9 @@ Date: 2026-09-07
 
 ## Brainstorming
 
-This is a web project, a website called "fraseario";  
+This is a web project, a website called "fraseario".  
 The idea is to have a collection of phrases an user wants to save because they have heard it or read it somewhere; the saving process has to be something ultra simple, that's important.   
+The website is not reactive.
 
 Data to be saved per phrase:
 - the phrase itself, text, max 200 chars, required
@@ -15,7 +16,7 @@ Data to be saved per phrase:
 - author, optional, 50 chars
 - FOR THE FUTURE: font style and background.
 
-Users management should exists, at least on a very basic level.
+Users management and authentication must exists, at least on a very basic level.
 
 User data can be the usual: 
 - first name
@@ -74,14 +75,64 @@ One User chooses one and only one Theme [Note 3](#note-3)
 
 ## Tech stack
 
-Laravel
-PHP
-PostgreSQL
-Blade
-Tailwind CSS
-Alpine.js
-Laravel Breeze
-Pest
+### Core application
+
+- Laravel, as a single monolithic application
+- PHP, latest stable version supported by your chosen Laravel release
+- PostgreSQL for the database
+- Blade for server-rendered HTML
+- Alpine.js or small vanilla JavaScript for the slider, swipe gestures, and author suggestions
+- Tailwind CSS for styling, if you do not want to write all CSS manually
+
+### Laravel packages and services
+
+- Laravel Breeze for basic authentication
+- Eloquent for database access
+- Form Requests for validation
+- Laravel queues and scheduler for future duplicate detection and notifications
+    - Start with the database queue; add Redis only when background work justifies it
+- PostgreSQL full-text search and pg_trgm for tag search and later phrase similarity
+
+### Testing and deployment
+
+- Pest for unit and feature tests
+- Playwright for the main browser workflows
+- GitHub Actions for automated tests
+- Podman + Cloudflare Tunnel
+
+**This application will be self-hosted.**
+
+## Self-Hosting Notes
+
+
+
+### Container layout
+
+Separate Podman containers for: 
+- app (PHP-FPM)
+- Nginx
+- PostgreSQL
+- Redis (once added). 
+
+Using a Podman pod or podman-compose/Quadlet so they share a network namespace cleanly.  
+**Keep Postgres data on a named volume**, not inside the container's writable layer — non-negotiable.
+
+### Backups — do this before real users exist
+
+Cron job running pg_dump (custom format, -Fc) on a schedule (daily is fine at this scale), rotated locally.
+Copy backups off the local machine — even something simple like syncing to Backblaze B2, an S3-compatible bucket, or another physical location. "Self-hosted" + "only backup lives on the same disk" is how projects die.
+Test a restore once, early, so you know the process works before you need it under pressure.
+
+### Cloudflare Tunnel specifics
+
+Tunnel exposes Nginx only — Postgres and Redis should never be tunnel-exposed or bound to a public interface, 127.0.0.1/internal pod network only.
+Since Cloudflare terminates TLS at their edge, Nginx can run plain HTTP internally; just make sure Laravel knows it's behind a proxy (TRUSTED_PROXIES in .env, trust Cloudflare's IP ranges) so APP_URL, redirects, and Str::random-based signed URLs generate correctly as https.
+Cloudflare Access can gate /login or admin routes at the edge if you want a second layer, worth considering for early manual user registration.
+
+### Updates/maintenance
+
+Since there's no managed host doing OS patching for me, put Podman auto-update (podman auto-update with labeled containers) or at least a manual monthly patch routine on my calendar. Self-hosting silently accumulates security debt if nobody's watching it.
+
 
 
 ## Questions
@@ -104,4 +155,6 @@ It may be interesting to allow these sort of interactions.
 
 <a id="note-2">Note 2</a>: Authors should be added on the fly when the phrase is saved. When a phrase is being written, on the Author fields, an ajax bases suggestions dropdown is filled up so the User can choose an Author and avoids duplication. New Authors are added in this moment.
 
-<a id="note-2">Note 3</a>: It may be possible for an User to choose a Theme for a specific Phrase, thus overrriding the User's fraseario Theme.
+<a id="note-3">Note 3</a>: It may be possible for an User to choose a Theme for a specific Phrase, thus overrriding the User's fraseario Theme.
+
+<a id="note-4">Note 4</a>: Setting an User custom background, allowing to upload an image for that, is not a free Feature, it may be developed on a later stage.
