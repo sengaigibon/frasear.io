@@ -4,23 +4,28 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// This REPLACES Breeze's default 0001_01_01_000000_create_users_table.php
+// content. Drop this in over the top of the file Breeze generated —
+// don't create a second migration, since no migrations have run yet.
+
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('username', 30)->unique();
+            $table->string('first_name', 30)->nullable();
+            $table->string('last_name', 30)->nullable();
+            $table->string('email', 100)->unique();
             $table->string('password');
+            $table->string('profile', 200)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
 
+        // Breeze also ships password_reset_tokens and sessions tables in this
+        // same file by default — keep those as Breeze generated them:
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -37,13 +42,10 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
