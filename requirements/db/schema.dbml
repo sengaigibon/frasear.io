@@ -1,0 +1,49 @@
+Table users {
+  id integer [primary key]
+  username varchar(30) [unique, not null]
+  first_name varchar(30)
+  last_name varchar(30)
+  email varchar(100) [unique, not null]
+  password varchar(255) [not null]
+  profile varchar(200)
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table phrases {
+  id integer [primary key]
+  author_id integer [null, ref: > authors.id]
+  body varchar(250) [not null]
+  created_at timestamp  
+  updated_at timestamp
+}
+
+Table authors {
+  id integer [primary key]
+  name varchar(100) [unique, not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table tags {
+  id integer [primary key]
+  name varchar(50) [unique, not null]
+  created_at timestamp
+}
+
+Table users_phrases {
+  user_id integer [not null, ref: > users.id]
+  phrase_id integer [not null, ref: > phrases.id]
+  created_at timestamp
+  indexes {
+    (user_id, phrase_id) [unique]
+  }
+}
+
+Table phrases_tags {
+  phrase_id integer [not null, ref: > phrases.id]
+  tag_id integer [not null, ref: > tags.id]
+  indexes {
+    (phrase_id, tag_id) [unique]
+  }
+}
