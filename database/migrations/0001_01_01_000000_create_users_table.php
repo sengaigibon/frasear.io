@@ -14,18 +14,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username', 30)->unique();
-            $table->string('first_name', 30)->nullable();
-            $table->string('last_name', 30)->nullable();
+            $table->string('username', 100)->unique();
+            $table->string('name', 200);
             $table->string('email', 100)->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile', 200)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
 
-        // Breeze also ships password_reset_tokens and sessions tables in this
-        // same file by default — keep those as Breeze generated them:
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
