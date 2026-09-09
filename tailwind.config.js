@@ -12,7 +12,21 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Work Sans"', ...defaultTheme.fontFamily.sans],
+                serif: ['Newsreader', ...defaultTheme.fontFamily.serif],
+            },
+            colors: {
+                paper: '#EDE7DA',
+                ink: '#2B2A28',
+                accent: '#3B5249',
+                muted: '#8C8577',
+                line: '#C9BFA9',
+            },
+            height: {
+                dvh: '100dvh',
+            },
+            width: {
+                dvw: '100dvw',
             },
         },
     },

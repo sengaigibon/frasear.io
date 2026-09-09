@@ -1,0 +1,1 @@
+Your app is essentially a digital commonplace book — the centuries-old practice of collecting lines you've read or heard into a personal notebook. That's the grounding concept, not a generic "quotes SaaS."
