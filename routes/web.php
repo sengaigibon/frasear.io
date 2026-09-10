@@ -11,6 +11,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [PhraseSearchController::class, 'index'])->name('phrases.search');
 
 Route::get('/write', [PhraseController::class, 'write'])->name('write');
+Route::post('/write', [PhraseController::class, 'store'])->name('write.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
