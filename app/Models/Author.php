@@ -10,6 +10,8 @@ class Author extends Model
 {
     use HasFactory;
 
+    public const int ANONYMOUS_AUTHOR_ID = 1;
+    
     protected $fillable = ['name'];
 
     public function phrases(): HasMany
