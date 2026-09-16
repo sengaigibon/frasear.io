@@ -9,12 +9,12 @@
 
                 <div class="flex items-center gap-4 w-full max-w-xs justify-end">
                     <form action="{{ route('phrases.search') }}" method="GET" class="w-full">
-                        <label for="tag-search" class="sr-only">Buscar por etiqueta</label>
+                        <label for="tag-search" class="sr-only">{{ __('Search by tag') }}</label>
                         <input
                                 id="tag-search"
                                 type="search"
                                 name="tag"
-                                placeholder="buscar por etiqueta"
+                                placeholder="{{ __('Search by tag') }}"
                                 class="w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-1 font-sans text-sm text-ink placeholder:text-muted focus:border-accent focus:ring-0"
                         >
                     </form>
@@ -28,17 +28,17 @@
 
                         <div x-show="open" x-transition.opacity style="display: none;" class="absolute right-0 top-full z-50 mt-2 w-48 rounded-md border border-line bg-white py-1 shadow-lg sm:w-56">
                             @guest
-                                <a href="{{ route('home') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">Inicio</a>
-                                <a href="{{ route('register') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">Registrarse</a>
-                                <a href="{{ route('login') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">Iniciar sesión</a>
+                                <a href="{{ route('home') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Home') }}</a>
+                                <a href="{{ route('register') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Register') }}</a>
+                                <a href="{{ route('login') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Log in') }}</a>
                             @else
-                                <a href="{{ route('home') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">Inicio</a>
-                                <a href="{{ route('write') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">Escribir frase</a>
-                                <a href="{{ route('frasear.show', auth()->user()->username) }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">Mi frasear.io</a>
+                                <a href="{{ route('home') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Home') }}</a>
+                                <a href="{{ route('write') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Write a phrase') }}</a>
+                                <a href="{{ route('frasear.show', auth()->user()->username) }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('My frasear.io') }}</a>
                                 <form method="POST" action="{{ route('logout') }}" class="block w-full m-0">
                                     @csrf
                                     <button type="submit" class="block w-full px-4 py-2 text-left font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">
-                                        Cerrar sesión
+                                        {{ __('Log Out') }}
                                     </button>
                                 </form>
                             @endguest
@@ -52,7 +52,7 @@
             @if ($phrases->isEmpty())
                 <div class="flex h-full items-center justify-center px-8 text-center">
                     <p class="font-serif text-xl italic text-muted">
-                        No phrases saved yet. Be the first to add one.
+                        {{ __('No phrases saved yet. Be the first to add one.') }}
                     </p>
                 </div>
             @else
@@ -89,7 +89,7 @@
                                             href="{{ route('frasear.show', $phrase->savedBy->username) }}"
                                             class="pointer-events-auto font-sans text-sm text-muted transition-colors hover:text-accent"
                                     >
-                                        frasear.io de <span class="font-semibold">{{ $phrase->savedBy->username }}</span>
+                                        {{ __('frasear.io by :username', ['username' => $phrase->savedBy->username]) }}
                                     </a>
                                 </div>
                             </div>
