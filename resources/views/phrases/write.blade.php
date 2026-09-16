@@ -33,6 +33,13 @@
                     <x-input-error :messages="$errors->get('author')" class="mt-2 text-sm text-red-600" />
                 </div>
 
+                <div>
+                    <label for="tags" class="sr-only">{{ __('Tags (optional)') }}</label>
+                    <input id="tags" type="text" name="tags" value="{{ old('tags') }}" placeholder="{{ __('Comma-separated tags') }}"
+                           class="w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-2 font-sans text-base text-ink placeholder:text-muted focus:border-accent focus:ring-0" />
+                    <x-input-error :messages="$errors->get('tags')" class="mt-2 text-sm text-red-600" />
+                </div>
+
                 <div class="mt-4 flex flex-col items-center gap-4">
                     <button type="submit" class="w-full border border-ink bg-ink py-3 font-sans text-sm font-medium tracking-widest text-paper transition-colors hover:bg-transparent hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2">
                         {{ __('Save phrase') }}
