@@ -1,4 +1,4 @@
-<x-layouts.frasear :title="config('app.name', 'Frasario') . ' — a collection of phrases worth keeping'">
+<x-layouts.frasear :title="__('frasear.io by :username', ['username' => $user->username])">
     <div class="flex h-dvh w-dvw flex-col">
         {{-- Top nav: wordmark + tag search, hairline border, no shadow --}}
         <header class="shrink-0 border-b border-line px-5 py-4 sm:px-8">
@@ -52,7 +52,7 @@
             @if ($phrases->isEmpty())
                 <div class="flex h-full items-center justify-center px-8 text-center">
                     <p class="font-serif text-xl italic text-muted">
-                        {{ __('No phrases saved yet. Be the first to add one.') }}
+                        {{ __('No saved phrases yet in :username\'s frasear.io.', ['username' => $user->username]) }}
                     </p>
                 </div>
             @else
