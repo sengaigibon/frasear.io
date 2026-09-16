@@ -22,10 +22,15 @@ class InitialData extends Seeder
             ]
         );
 
-        $author = Author::firstOrCreate(['name' => 'Anonymous']);
-        $phrase = Phrase::firstOrCreate(['body' => "Mi primera frase", 'author_id' => $author->id]);
+        $author = Author::firstOrCreate(['name' => 'Anónimo']);
+        $phrase1 = Phrase::firstOrCreate(['body' => "Mi primera frase", 'author_id' => $author->id]);
+        $phrase2 = Phrase::firstOrCreate(['body' => "Mi segunda frase", 'author_id' => $author->id]);
+        $phrase3 = Phrase::firstOrCreate(['body' => "Mi tercera frase", 'author_id' => $author->id]);
 
-        $user->phrases()->attach($phrase);
+        $user->phrases()->attach($phrase1);
+        $user->phrases()->attach($phrase2);
+        $user->phrases()->attach($phrase3);
+        
         $user->save();
     }
 }
