@@ -45,6 +45,22 @@ logs: ## Follow logs for all services
 logs-app: ## Follow logs for the app container only
 	$(PROD) logs -f app
 
+## --- Temporary: testing via Cloudflare Quick Tunnel (no domain needed yet) ---
+
+QUICK := $(COMPOSE_CMD) -f $(PROD_FILE) -f compose.quick-tunnel.yml
+
+.PHONY: quick-tunnel-up
+quick-tunnel-up: ## Start the stack with a throwaway *.trycloudflare.com URL — no domain needed
+	$(QUICK) up -d
+
+.PHONY: quick-tunnel-url
+quick-tunnel-url: ## Print the random public URL from the cloudflared logs
+	$(QUICK) logs cloudflared | grep -o 'https://[a-z0-9-]*\.trycloudflare\.com' | tail -1
+
+.PHONY: quick-tunnel-down
+quick-tunnel-down: ## Stop the quick-tunnel stack
+	$(QUICK) down
+
 ## --- Dev stack (Postgres only — run artisan/npm on the host) ---
 
 .PHONY: dev-up
@@ -119,6 +135,15 @@ nuke: ## Stop stack AND delete volumes — destroys the database. DESTRUCTIVE.
 	@echo "This deletes pgdata, app_public and storage volumes permanently."
 	@read -p "Type 'yes' to continue: " ans && [ "$$ans" = "yes" ]
 	$(PROD) down -v
+
+## --- Host development (NOT Podman — runs directly on your machine) ---
+## Requires: postgres running via `make dev-up`, and `npm install` already done.
+
+.PHONY: serve
+serve: ## Run php artisan serve + npm run dev together (Ctrl+C stops both)
+	npx concurrently -k -n "ARTISAN,VITE" -c "green,cyan" \
+		"php artisan serve" \
+		"npm run dev"
 
 ## --- Help ---
 
