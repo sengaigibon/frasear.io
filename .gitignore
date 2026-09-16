@@ -34,3 +34,9 @@
 .DS_Store
 Thumbs.db
 .editorconfig
+
+.agents
+.github
+.mcp.json
+boost.json
+AGENTS.MD
