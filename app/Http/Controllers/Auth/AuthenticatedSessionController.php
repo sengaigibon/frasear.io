@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('frasear.show',auth()->user()->username));
+        return redirect()->intended(route('frasear.show', auth()->user()->username));
     }
 
     /**
