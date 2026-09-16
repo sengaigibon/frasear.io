@@ -58,9 +58,39 @@ RUN composer install \
 # Now the application code.
 COPY . .
 
-# --no-scripts above skipped package:discover; run it now that code is present.
-RUN composer dump-autoload --optimize --no-dev \
-    && php artisan package:discover --ansi
+# Composer/artisan shell out to git for package metadata; the container
+# builds as root, which git treats as "dubious ownership" by default.
+# Must run before any composer command below.
+RUN git config --global --add safe.directory /var/www/html
+
+# Defensive: wipe any cached provider/config manifests that may have leaked
+# in from the host via the COPY above (e.g. bootstrap/cache/packages.php
+# referencing dev-only packages like Laravel Boost). Must run BEFORE the
+# composer install below, since that install triggers `package:discover`,
+# which reads this cache before it gets a chance to regenerate it.
+RUN rm -f bootstrap/cache/*.php
+
+# podman-compose's build path does not reliably honour .dockerignore /
+# .containerignore (a known rough edge distinct from native `podman build`),
+# so COPY . . above may have overwritten the clean --no-dev vendor/ from
+# step 6 with whatever vendor/ exists on the host (dev packages included).
+# Rather than depend on ignore-file support working, force correctness:
+# discard whatever vendor/ we now have and reinstall clean from
+# composer.lock. This also regenerates the optimized autoloader and runs
+# `package:discover` automatically (it's wired to composer's
+# post-autoload-dump event) — no separate dump-autoload step needed.
+# Composer's own package cache is already warm from step 6, so this hits
+# local disk rather than re-downloading over the network.
+RUN rm -rf vendor \
+    && composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+# Ongoing safety net: fail loudly if a dev-only package ever ends up in a
+# --no-dev image, instead of surfacing as a cryptic "class not found" error
+# at runtime.
+RUN if [ -d vendor/laravel/boost ]; then \
+        echo "ERROR: vendor/laravel/boost present in a --no-dev build." >&2; \
+        exit 1; \
+    fi
 
 # Compiled assets from stage 1.
 COPY --from=assets /build/public/build ./public/build
