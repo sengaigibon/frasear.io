@@ -56,6 +56,10 @@
                         REGISTRARSE
                     </button>
 
+                    <a href="{{ route('home') }}" class="block w-full border border-ink bg-transparent py-3 text-center font-sans text-sm font-medium tracking-widest text-ink transition-colors hover:bg-ink hover:text-paper focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 focus:ring-offset-paper">
+                        REGRESAR AL INICIO
+                    </a>
+
                     <a href="{{ route('login') }}" class="font-sans text-sm text-muted transition-colors hover:text-accent">
                         ¿Ya tienes cuenta?
                     </a>
