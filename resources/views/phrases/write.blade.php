@@ -39,6 +39,11 @@
                     </button>
                 </div>
             </form>
+            <div class="mt-4 flex flex-col items-center gap-4">
+                <button type="submit" class="w-full border border-ink bg-ink py-3 font-sans text-sm font-medium tracking-widest text-paper transition-colors hover:bg-transparent hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2">
+                    <a href="{{ route('frasear.show', auth()->user()->username) }}">Regresar a mi fraseari.io</a>
+                </button>
+            </div>
         </div>
     </div>
 </x-layouts.frasear>
