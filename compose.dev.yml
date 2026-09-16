@@ -1,0 +1,37 @@
+# Local development: Postgres only.
+#
+# Deliberately does NOT containerise the app for dev work. Running
+# `php artisan serve` + `npm run dev` on the host keeps Vite HMR instant and
+# avoids the rebuild-on-every-change cycle you'd get from the full image.
+# Use compose.yml when you want to test the real production stack.
+#
+#   docker compose -f compose.dev.yml up -d
+#
+# Then point .env at 127.0.0.1:5432 and run artisan/npm on the host as usual.
+
+name: frasear-dev
+
+volumes:
+  pgdata_dev:
+    external: true
+    name: fraseario_pgdata      
+
+services:
+  postgres:
+    image: docker.io/library/postgres:17-alpine
+    container_name: frasear_postgres_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-frasear}
+      POSTGRES_USER: ${DB_USERNAME:-frasear}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-replace_me}
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+    # Bound to 127.0.0.1 so it's reachable from the host but not the network.
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-frasear}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
