@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
+use App\Http\Controllers\UserFrasearioController;
+
 // Placeholder / At the end because the regexp matches anything
-Route::get('/{username}', function (string $username) {
-    abort(404);
-})->name('frasear.show')->where('username', '[A-Za-z0-9_-]+');
+Route::get('/{username}', [UserFrasearioController::class, 'show'])->name('frasear.show')->where('username', '[A-Za-z0-9_.-]+');
