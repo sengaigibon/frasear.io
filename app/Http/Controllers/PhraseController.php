@@ -35,17 +35,8 @@ class PhraseController extends Controller
 
         if (!empty($tagNames)) {
             Validator::make(['tags' => $tagNames], [
-                'tags' => [
-                    function (string $attribute, mixed $value, \Closure $fail): void {
-                        foreach ($value as $tagName) {
-                            if (mb_strlen($tagName) > 50) {
-                                $fail('Each tag must not be greater than 50 characters.');
-
-                                return;
-                            }
-                        }
-                    },
-                ],
+                'tags' => ['array'],
+                'tags.*' => ['string', 'max:50']
             ])->validate();
         }
         
