@@ -1,2 +1,36 @@
+# Laravel / PHP dependencies
+/vendor/
 
+# Environment files
+.env
+.env.*
+!.env.example
 
+# Laravel runtime files
+/storage/app/*
+!/storage/app/.gitignore
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+
+# Frontend dependencies and build output
+/node_modules/
+/public/build/
+/public/hot
+
+# Local tooling and OS files
+.phpunit.result.cache
+.phpactor.json
+.php-cs-fixer.cache
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.editorconfig

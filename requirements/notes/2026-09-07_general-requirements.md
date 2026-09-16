@@ -90,29 +90,24 @@ One User chooses one and only one Theme [Note 3](#note-3)
 - Eloquent for database access
 - Form Requests for validation
 - Laravel queues and scheduler for future duplicate detection and notifications
-    - Start with the database queue; add Redis only when background work justifies it
 - PostgreSQL full-text search and pg_trgm for tag search and later phrase similarity
 
 ### Testing and deployment
 
 - Pest for unit and feature tests
-- Playwright for the main browser workflows
-- GitHub Actions for automated tests
 - Podman + Cloudflare Tunnel
 
 **This application will be self-hosted.**
 
+
+
 ## Self-Hosting Notes
-
-
 
 ### Container layout
 
 Separate Podman containers for: 
-- app (PHP-FPM)
-- Nginx
+- app (PHP-FPM) & Nginx
 - PostgreSQL
-- Redis (once added). 
 
 Using a Podman pod or podman-compose/Quadlet so they share a network namespace cleanly.  
 **Keep Postgres data on a named volume**, not inside the container's writable layer — non-negotiable.
@@ -158,3 +153,38 @@ It may be interesting to allow these sort of interactions.
 <a id="note-3">Note 3</a>: It may be possible for an User to choose a Theme for a specific Phrase, thus overrriding the User's fraseario Theme.
 
 <a id="note-4">Note 4</a>: Setting an User custom background, allowing to upload an image for that, is not a free Feature, it may be developed on a later stage.
+
+
+## Plan
+
+### Iteration 1: POC
+
+Work on a Proof-Of-Concept:  
+[ ] Database design completed.  
+[ ] Development environment up and running **locally**.  
+[ ] Containers up and running.  
+[ ] DB schema deployed on PostegreSQL.  
+[ ] One user (myself) is added.  
+[ ] User is able to add a phrase.  
+[ ] Phrase saved on database.
+
+
+### Iteration 2.
+[ ] Home page works.  
+[ ] Personal Fraseario works.  
+
+
+### Iteration 3.
+[ ] User authentication.  
+[ ] Login page.  
+[ ] Logout page.  
+[ ] 404 page.  
+[ ] Wrong login page.  
+
+
+### Iteration 4.
+[ ] Phrase duplication detection and handling.  
+[ ] Cloudflare tunneling works.
+[ ] Theming
+
+
