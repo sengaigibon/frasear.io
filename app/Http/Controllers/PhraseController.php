@@ -49,6 +49,6 @@ class PhraseController extends Controller
 
 
 
-        return redirect()->route('write')->with('status', 'Phrase saved.');
+        return redirect()->route('write')->with('status', 'Frase guardada.');
     }
 }
