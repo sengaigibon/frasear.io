@@ -6,6 +6,7 @@ use App\Models\Author;
 use App\Models\Phrase;
 use App\Models\Tag;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -63,13 +64,8 @@ class PhraseController extends Controller
 
         $phrase->tags()->syncWithoutDetaching($tagIds);
 
-        // Find current user and if no user fallback to id 1
-        $user = auth()->user();
-        if (!$user) {
-            $user = User::find(1);
-        }
+        $user = $request->user();
         $user->phrases()->attach($phrase);
-        $user->save();
 
         return redirect()->route('write')->with('status', 'Frase guardada.');
     }
