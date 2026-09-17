@@ -36,11 +36,12 @@ test('a tag cannot be longer than the database limit', function () {
         ->from(route('write'))
         ->post(route('write.store'), [
             'body' => 'A phrase worth keeping',
+            'author' => 'A Test Author',
             'tags' => str_repeat('a', 51),
         ]);
 
     $response
-        ->assertSessionHasErrors('tags')
+        ->assertSessionHasErrors('tags.0')
         ->assertRedirect(route('write'));
 
     $this->assertDatabaseMissing('tags', ['name' => str_repeat('a', 51)]);

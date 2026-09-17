@@ -21,9 +21,9 @@ class PhraseController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'body' => 'required|string|max:1000',
-            'author' => 'nullable|string|max:255',
-            'tags' => 'nullable|string|max:100',
+            'body' => 'required|string|max:250',
+            'author' => 'nullable|string|max:100',
+            'tags' => 'nullable|string|max:500',
         ]);
 
         $tagNames = collect(explode(',', $data['tags'] ?? ''))
@@ -33,19 +33,13 @@ class PhraseController extends Controller
             ->values()
             ->all();
 
-        Validator::make(['tags' => $tagNames], [
-            'tags' => [
-                function (mixed $value, \Closure $fail): void {
-                    foreach ($value as $tagName) {
-                        if (mb_strlen($tagName) > 50) {
-                            $fail('Each tag must not be greater than 50 characters.');
-
-                            return;
-                        }
-                    }
-                },
-            ],
-        ])->validate();
+        if (!empty($tagNames)) {
+            Validator::make(['tags' => $tagNames], [
+                'tags' => ['array'],
+                'tags.*' => ['string', 'max:50']
+            ])->validate();
+        }
+        
 
         $authorName = trim($data['author'] ?? '');
         if ($authorName === '') {

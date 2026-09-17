@@ -1,0 +1,37 @@
+# Keeping .env out of the image is the important one — config is injected at
+# runtime via env_file, never baked in.
+.env
+.env.*
+!.env.example
+
+/vendor/
+/node_modules/
+/public/build/
+/public/hot
+
+/storage/app/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Cached provider/config manifests generated on the host (with dev packages
+# installed) must never enter the image — they reference dev-only classes
+# like Laravel Boost that --no-dev intentionally skips, and a stale copy
+# breaks `artisan package:discover` at build time.
+/bootstrap/cache/*.php
+
+/tests/
+/requirements/
+.phpunit.result.cache
+.git/
+.github/
+.idea/
+.vscode/
+.DS_Store
+AGENTS.md
+README.md
+compose*.yml
+Dockerfile
+.dockerignore

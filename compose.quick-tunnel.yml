@@ -1,0 +1,22 @@
+# TEMPORARY testing override — use only until you buy a domain.
+#
+# Swaps cloudflared from the token-based named tunnel to a Quick Tunnel:
+# no domain, no account link, no token required. Trade-off: the public URL
+# is random and changes every time the container restarts, and Cloudflare
+# explicitly documents Quick Tunnels as unsuitable for production.
+#
+# Usage:
+#   podman-compose -f compose.yml -f compose.quick-tunnel.yml up -d
+#
+# The assigned URL only appears in the container logs — there's no
+# dashboard for Quick Tunnels — so fetch it with:
+#   podman-compose -f compose.yml -f compose.quick-tunnel.yml logs cloudflared
+#
+# Once you own a domain, just drop the -f compose.quick-tunnel.yml flag to
+# go back to the real token-based tunnel in compose.yml, unchanged.
+
+services:
+  cloudflared:
+    environment:
+      TUNNEL_TOKEN: ""  # unset — quick tunnels don't authenticate
+    command: tunnel --no-autoupdate --url http://nginx:80
