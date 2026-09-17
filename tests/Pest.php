@@ -48,3 +48,27 @@ function something()
 {
     // ..
 }
+
+/**
+ * Create a phrase, attach it to the given tag name, and mark it as saved
+ * by $user. Mirrors how PhraseController::store builds real data, without
+ * going through that route. Shared across Feature tests that need a
+ * quick, realistic phrase+tag+saver setup (search, and later the phrase
+ * management list).
+ */
+function createSearchablePhrase(\App\Models\User $user, string $body, string $tagName): \App\Models\Phrase
+{
+    $author = \App\Models\Author::firstOrCreate(['name' => 'Anónimo']);
+
+    $phrase = \App\Models\Phrase::create([
+        'body' => $body,
+        'author_id' => $author->id,
+    ]);
+
+    $tag = \App\Models\Tag::firstOrCreate(['name' => $tagName]);
+    $phrase->tags()->attach($tag->id);
+
+    $user->phrases()->attach($phrase->id);
+
+    return $phrase;
+}
