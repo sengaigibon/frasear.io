@@ -35,5 +35,6 @@
     "Search": "Buscar",
     "No phrases found for the tag ':tag'.": "No se encontraron frases para la etiqueta ':tag'.",
     "No phrases found for the search term ':term'.": "No se encontraron frases para el término de búsqueda ':term'.",
-    "No phrases found.": "No se encontraron frases."
+    "No phrases found.": "No se encontraron frases.",
+    "saved by :username": "Guardado por :username"
 }
