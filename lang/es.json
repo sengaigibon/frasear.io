@@ -14,6 +14,7 @@
     "Search by tag": "Buscar por etiqueta",
     "Home": "Inicio",
     "Write a phrase": "Escribir frase",
+    "Manage phrases": "Gestionar frasear.io",
     "My frasear.io": "Mi frasear.io",
     "Log Out": "Cerrar sesión",
     "No saved phrases yet in :username's frasear.io.": "No hay frases guardadas aún en el frasear.io de :username.",
@@ -36,5 +37,9 @@
     "No phrases found for the tag ':tag'.": "No se encontraron frases para la etiqueta ':tag'.",
     "No phrases found for the search term ':term'.": "No se encontraron frases para el término de búsqueda ':term'.",
     "No phrases found.": "No se encontraron frases.",
-    "saved by :username": "Guardado por :username"
+    "saved by :username": "Guardado por :username",
+    "Edit": "Editar",
+    "Remove": "Borrar",
+    "Edit phrase": "Editar frase",
+    "Save changes": "Guardar"
 }
