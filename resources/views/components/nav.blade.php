@@ -33,6 +33,7 @@
                     @else
                         <a href="{{ route('home') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Home') }}</a>
                         <a href="{{ route('write') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Write a phrase') }}</a>
+                        <a href="{{ route('phrases.manage') }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('Manage phrases') }}</a>
                         <a href="{{ route('frasear.show', auth()->user()->username) }}" class="block px-4 py-2 font-sans text-sm text-ink hover:bg-slate-50 hover:text-accent">{{ __('My frasear.io') }}</a>
                         <form method="POST" action="{{ route('logout') }}" class="block w-full m-0">
                             @csrf
