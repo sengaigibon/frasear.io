@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PhraseSearchController;
 use App\Http\Controllers\PhraseController;
+use App\Http\Controllers\PhraseManagementController;
+use App\Http\Controllers\PhraseSearchController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +18,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/write', [PhraseController::class, 'write'])->name('write');
     Route::post('/write', [PhraseController::class, 'store'])->name('write.store');
+
+    Route::get('/phrases/manage', [PhraseManagementController::class, 'index'])->name('phrases.manage');
+    Route::get('/phrases/{phrase}/edit', [PhraseManagementController::class, 'edit'])->name('phrases.edit');
+    Route::patch('/phrases/{phrase}', [PhraseManagementController::class, 'update'])->name('phrases.update');
+    Route::delete('/phrases/{phrase}', [PhraseManagementController::class, 'destroy'])->name('phrases.destroy');
 });
 
 require __DIR__.'/auth.php';
-
 
 use App\Http\Controllers\UserFrasearioController;
 
