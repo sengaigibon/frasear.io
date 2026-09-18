@@ -41,5 +41,7 @@
     "Edit": "Editar",
     "Remove": "Borrar",
     "Edit phrase": "Editar frase",
-    "Save changes": "Guardar"
+    "Save changes": "Guardar",
+    "Phrase updated successfully.": "Frase actualizada.",
+    "Phrase removed from your frasear.io.": "Frase eliminada de tu frasear.io."
 }
