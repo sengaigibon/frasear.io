@@ -5,7 +5,7 @@
         <main class="mx-auto w-full max-w-2xl flex-1 px-6 py-12 sm:px-8">
             @if (is_null($phrases))
                 <p class="font-serif text-xl italic text-muted">
-                    {{ __('Type a tag above to search saved phrases.') }}
+                    {{ __('Type a word, author, or tag above to search saved phrases.') }}
                 </p>
             @else
                 <h1 class="mb-8 font-serif text-2xl italic text-ink">
@@ -14,7 +14,13 @@
 
                 @if ($phrases->isEmpty())
                     <p class="font-sans text-sm text-muted">
-                        {{ __('No phrases found for that tag.') }}
+                        @if (($mode ?? 'word') === 'author')
+                            {{ __('No phrases found for that author.') }}
+                        @elseif (($mode ?? 'word') === 'tag')
+                            {{ __('No phrases found for that tag.') }}
+                        @else
+                            {{ __('No phrases found for that word.') }}
+                        @endif
                     </p>
                 @else
                     <ul class="space-y-8">
@@ -45,7 +51,7 @@
                                     <div class="mt-3 flex flex-wrap gap-2">
                                         @foreach ($phrase->tags as $tag)
                                             <a
-                                                href="{{ route('phrases.search', ['tag' => $tag->name]) }}"
+                                                href="{{ route('phrases.search', ['username' => $username ?? null, 'mode' => 'tag', 'q' => $tag->name]) }}"
                                                 class="font-sans text-xs text-muted transition-colors hover:text-accent"
                                             >#{{ $tag->name }}</a>
                                         @endforeach

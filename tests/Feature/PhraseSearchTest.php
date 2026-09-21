@@ -5,11 +5,11 @@ use App\Models\Phrase;
 use App\Models\Tag;
 use App\Models\User;
 
-test('visiting the search page without a tag shows a prompt, not results', function () {
+test('visiting the search page without a query shows a prompt, not results', function () {
     $response = $this->get(route('phrases.search'));
 
     $response->assertOk();
-    $response->assertSee('Type a tag above to search saved phrases.');
+    $response->assertSee('Type a word, author, or tag above to search saved phrases.');
 });
 
 test('searching an existing tag returns the matching phrase', function () {
@@ -38,6 +38,43 @@ test('searching a tag with no matches shows an empty state', function () {
 
     $response->assertOk();
     $response->assertSee('No phrases found for that tag.');
+});
+
+test('searching by author matches authored phrases with up to two words', function () {
+    $user = User::factory()->create();
+    $author = Author::firstOrCreate(['name' => 'Ana García']);
+    $phrase = Phrase::create(['body' => 'A phrase by Ana', 'author_id' => $author->id]);
+    $user->phrases()->attach($phrase->id);
+
+    $response = $this->get(route('phrases.search', ['mode' => 'author', 'q' => 'Ana García']));
+
+    $response->assertOk();
+    $response->assertSee('A phrase by Ana');
+});
+
+test('searching by word matches phrase bodies across saved phrases', function () {
+    $user = User::factory()->create();
+    createSearchablePhrase($user, 'A phrase worth keeping', 'inspiration');
+
+    $response = $this->get(route('phrases.search', ['mode' => 'word', 'q' => 'worth']));
+
+    $response->assertOk();
+    $response->assertSee('A phrase worth keeping');
+    $response->assertDontSee('No phrases found for that tag.');
+});
+
+test('searching in a specific user fraseario only returns that user\'s phrases', function () {
+    $owner = User::factory()->create(['username' => 'alice']);
+    $other = User::factory()->create(['username' => 'bob']);
+
+    createSearchablePhrase($owner, 'Alice keeps this phrase', 'sunrise');
+    createSearchablePhrase($other, 'Bob keeps this phrase', 'sunrise');
+
+    $response = $this->get(route('phrases.search', ['username' => $owner->username, 'mode' => 'word', 'q' => 'phrase']));
+
+    $response->assertOk();
+    $response->assertSee('Alice keeps this phrase');
+    $response->assertDontSee('Bob keeps this phrase');
 });
 
 test('a phrase with a matching tag but no saver is excluded from results', function () {
