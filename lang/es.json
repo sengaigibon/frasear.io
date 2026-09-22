@@ -54,5 +54,6 @@
     "Edit phrase": "Editar frase",
     "Save changes": "Guardar",
     "Phrase updated successfully.": "Frase actualizada.",
-    "Phrase removed from your frasear.io.": "Frase eliminada de tu frasear.io."
+    "Phrase removed from your frasear.io.": "Frase eliminada de tu frasear.io.",
+    "Results for \":term\"": "Resultados para \":term\""
 }
