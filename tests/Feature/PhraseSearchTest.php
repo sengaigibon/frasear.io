@@ -9,7 +9,7 @@ test('visiting the search page without a query shows a prompt, not results', fun
     $response = $this->get(route('phrases.search'));
 
     $response->assertOk();
-    $response->assertSee('Type a word, author, or tag above to search saved phrases.');
+    $response->assertSee('Escribe una palabra, un autor o una etiqueta arriba para buscar frases guardadas.');
 });
 
 test('searching an existing tag returns the matching phrase', function () {
@@ -37,7 +37,7 @@ test('searching a tag with no matches shows an empty state', function () {
     $response = $this->get(route('phrases.search', ['tag' => 'doesnotexist']));
 
     $response->assertOk();
-    $response->assertSee('No phrases found for that tag.');
+    $response->assertSee('No se encontraron frases para esa etiqueta.');
 });
 
 test('searching by author matches authored phrases with up to two words', function () {
@@ -89,7 +89,7 @@ test('a phrase with a matching tag but no saver is excluded from results', funct
 
     $response->assertOk();
     $response->assertDontSee('Nobody saved this one');
-    $response->assertSee('No phrases found for that tag.');
+    $response->assertSee('No se encontraron frases para esa etiqueta.');
 });
 
 test('search results paginate and the tag stays in the query string across pages', function () {
